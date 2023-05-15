@@ -6,7 +6,6 @@
 #warnings.filterwarnings("ignore")
 #import math
 import streamlit as st
-import io
 
 st.title('ROI of an AI project')
 st.write('''
@@ -23,24 +22,7 @@ st.markdown('''To start with the evaluation, :orange[upload your file] or :orang
 st.write('''Scenario sheets must be named accordingly to the index in the general sheet. Add as many scenario as you need. 
 ''')
 
-sc_col=['asset_name','C_Plan','O_Plan','C_1','O_1','C_2','O_2','C_3','O_3',\
-        'C_Pred','O_Pred','E','G','VE','Eprod','Thprod','enmod','maintmod'\
-        ,'optmod','perc_data','av_failure']
-gen_col=['INDEX','scenario_description','ce','cg','cve','bck_ee','bck_man','bck_opt','tot_yr','sw','cost_FTE']
-general=pd.DataFrame(columns=gen_col)
-scenario=pd.DataFrame(columns=sc_col)
-buffer = io.BytesIO()
-with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
-    # Write each dataframe to a different worksheet.
-    general.to_excel(writer, sheet_name='GENERICO', index=False)
-    scenario.to_excel(writer, sheet_name='scenario_name', index=False)
-    # Close the Pandas Excel writer and output the Excel file to the buffer
-    writer.save()
-st.download_button(
-label="Download Template",
-data=buffer,
-file_name='{}.xlsx'.format('Template'),
-mime='application/vnd.ms-excel')
+
 
 template_structure={}
 #template_structure={}
@@ -81,6 +63,4 @@ if st.checkbox(':paperclip: :red[Show template structure and descriptions:]'):
     for item in template_structure:
         st.write('Sheet: :orange[{}]'.format(item))
         st.write(template_structure[item])
-st.write(""" If you have the template ready, write here the path for the file to upload. """)
-name_file = st.text_input('')
 #:heavy_dollar_sign:
